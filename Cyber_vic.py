@@ -6,6 +6,8 @@ mdp_salle101="101"
 if mot_de_passe_salle_cyber==mdp_salle101:
     print("Bienvenue dans la salle 101")
 
+
+
 def check_password(password):
   """
   Vérifie si un mot de passe est sécurisé.
@@ -68,6 +70,8 @@ def usb_cyber():
     enigme_cyber_1=True
     return
 
+usb_cyber()
+
 if enigme_cyber_1==True and enigme_cyber_2==True:
 
 #Apparition du splash screen avec l'individu louche
@@ -97,12 +101,6 @@ def social_engineering_cyber():
         error_social_engineering+=1
     else:
         print("Élève MNS : Ah, d'accord ! Pas de soucis.")
-    print("Élève MNS : Tu as des animaux ?")
-    if input("Entrez une réponse")==reponse_nathalie_animaux:
-        print("Élève MNS : Ah, c'est bien ce que je pensais!")
-        error_social_engineering+=1
-    else:
-           print("Élève MNS : Ah, d'accord !")
     print("Élève MNS : Je n'arrive pas à accéder à mon PC, tu peux me donner ton ID s'il te plait pour que je puisse me connecter ?.")
     if input("Entrez une réponse")==reponse_nathalie_ID:
         print("Élève MNS : Merci beaucoup! Je vais pouvoir me connecter maintenant.")
