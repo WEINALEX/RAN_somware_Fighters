@@ -15,7 +15,8 @@ pygame.display.set_caption("Pygame Background Example")
 
 # Load background image
 # Replace 'background.jpg' with the path to your image file
-background_image = pygame.image.load('background.png')
+path_file = './hackaton/assets/'
+background_image = pygame.image.load('./hackaton/assets/img/background.png')
 
 # Scale the image to cover the screen while maintaining its aspect ratio
 image_rect = background_image.get_rect()
@@ -34,16 +35,16 @@ def draw_background():
 
 # Load and play background music
 # Replace 'background.mp3' with the path to your audio file
-pygame.mixer.music.load('background.mp3')
+pygame.mixer.music.load('./hackaton/assets/sounds/background.mp3')
 pygame.mixer.music.play(-1)  # Play the music in a loop
 
 # Load quack sound effect
-quack_sound = pygame.mixer.Sound('quack.mp3')
+quack_sound = pygame.mixer.Sound('./hackaton/assets/sounds/quack.mp3')
 
 # Load images for sound on, sound off, and duck icon
-sound_on_image = pygame.image.load('sound_on.png')
-sound_off_image = pygame.image.load('sound_off.png')
-duck_image = pygame.image.load('duck.png')
+sound_on_image = pygame.image.load('./hackaton/assets/img/sound_on.png')
+sound_off_image = pygame.image.load('./hackaton/assets/img/sound_off.png')
+duck_image = pygame.image.load('./hackaton/assets/img/duck.png')
 # duck_image = pygame.transform.scale(duck_image, (60, 60))  # Resize duck image
 
 # Resize images if necessary
