@@ -1,8 +1,6 @@
 import pygame, sys
 from start import EscapeGame
 
-# pygame.init()
-
 class TaiEnigme2:
 
     def __init__(self):

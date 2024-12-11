@@ -2,8 +2,6 @@ import pygame, sys
 from start import EscapeGame
 from tai_enigme2 import TaiEnigme2
 
-# pygame.init()
-
 def main():
 
         # Main game loop
