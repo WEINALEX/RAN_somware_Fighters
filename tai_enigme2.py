@@ -1,9 +1,9 @@
 import pygame, sys
 from start import EscapeGame
 
-pygame.init()
+# pygame.init()
 
-class enigme_2:
+class TaiEnigme2:
 
     def __init__(self):
         self.game = EscapeGame()
@@ -15,15 +15,16 @@ class enigme_2:
 
     def import_assets(self):
         background_path = './assets/img/tai_'
-        self.backgrounds = {0: 'computer', 1: 'web', 2: 'cmd', 
-                            3: 'wifi', 4: 'wifiok', 5: 'webok'}
+        self.backgrounds = {0: 'web', 1: 'cmd', 
+                            2: 'wifi', 3: 'wifiok', 4: 'webok'}
         
-        for key in self.backgrounds.key():
+        for key in self.backgrounds.keys():
             full_path = background_path + self.backgrounds[key] + '.png'
             self.backgrounds[key] = pygame.image.load(full_path)
 
     def load_enigme(self):
         enigme_on = True
+        bg = 0
         
         while enigme_on:
             for event in pygame.event.get():
@@ -36,5 +37,7 @@ class enigme_2:
                     if event.key == pygame.K_LEFT:
                         self.player_event = "left"
 
+            self.game.screen.fill((0, 0, 0))
+            self.game.draw_background(self.backgrounds[bg])
+
             pygame.display.update()
-            self.clock.tick(60)

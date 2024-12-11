@@ -1,5 +1,4 @@
 import pygame
-import sys
 
 # Initialize Pygame
 pygame.init()
@@ -22,9 +21,6 @@ class EscapeGame:
         # Replace 'background.jpg' with the path to your image file
         # path_file = './assets/'
         self.background_image = pygame.image.load('./assets/img/background.png')
-
-        # Scale the image to cover the screen while maintaining its aspect ratio
-        self.image_rect = self.background_image.get_rect()
 
         self.load_music_assets()
 
@@ -60,7 +56,8 @@ class EscapeGame:
 
     def draw_background(self, image):
         # Scale the image to cover the screen
-        self.image = pygame.transform.scale(image, (self.screen.get_width() - 200, self.screen.get_height() - 200))
+        self.image = pygame.transform.scale(image, (self.screen.get_width() - 200, self.screen.get_height() - 300))
+        self.image_rect = self.image.get_rect()
         # self.scale = max(self.SCREEN_WIDTH / self.image_rect.width, self.SCREEN_HEIGHT / self.image_rect.height)
         # self.scaled_width = int(self.image_rect.width * self.scale)
         # self.scaled_height = int(self.image_rect.height * self.scale)

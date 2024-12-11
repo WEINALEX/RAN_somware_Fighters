@@ -1,7 +1,8 @@
 import pygame, sys
 from start import EscapeGame
+from tai_enigme2 import TaiEnigme2
 
-pygame.init()
+# pygame.init()
 
 def main():
 
@@ -25,6 +26,9 @@ def main():
                         print(f"Input validated: {play.input_text}")
                         play.quack_sound.play()  # Play the quack sound
                         play.input_text = ""  # Clear input text
+
+                    if play.image_rect.collidepoint(event.pos):
+                        tai_2.load_enigme()
 
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
@@ -54,4 +58,5 @@ def main():
 
 if __name__ == "__main__":
     play = EscapeGame()
+    tai_2 = TaiEnigme2()
     main()
