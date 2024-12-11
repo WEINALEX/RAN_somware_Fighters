@@ -1,10 +1,12 @@
 import pygame, sys
+from start import EscapeGame
 
 pygame.init()
 
 class enigme_2:
 
     def __init__(self):
+        self.game = EscapeGame()
         self.input_text = ""
         self.import_assets()
         self.choice_1 = ""
@@ -20,9 +22,9 @@ class enigme_2:
             full_path = background_path + self.backgrounds[key] + '.png'
             self.backgrounds[key] = pygame.image.load(full_path)
 
-    def load_computer(self):
+    def load_enigme(self):
         enigme_on = True
-
+        
         while enigme_on:
             for event in pygame.event.get():
 
