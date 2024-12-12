@@ -1,9 +1,3 @@
-# # 1. Arriver dans la salle -> clicque sur l'ordinateur (positionX: 180, 421 - positionY: 609, 682)
-# # 2. on est sur le computeur -> il ne démarre pas -> on change le matos
-# # 3. interface de l'énigme
-# # 4. On fait le jeu
-# # 5. si réussi on charge l'énigme 2
-
 import pygame, sys
 from start import EscapeGame
 
@@ -49,32 +43,32 @@ class tai_enigme_1:
 
     def tai_game_loop(self, index):
         """ Fonction récursive qui gère les énigmes """
-        if index == 8:  # Condition d'arrêt
+        if index == 8:
             return index
 
         # Dessiner le fond de l'énigme actuelle
         self.game.draw_background(self.backgrounds[index])
-        pygame.display.update()  # On met à jour l'affichage
+        pygame.display.update() 
 
         # On appelle l'étape correspondante
-        step_function = self.steps[index % 8]  # On prend l'étape actuelle
-        success = step_function(index)  # Appel de la fonction (ex: step_1, step_2, ...)
+        step_function = self.steps[index % 8] 
+        success = step_function(index) 
 
         if success:
-            index += 1  # On avance vers l'énigme suivante
+            index += 1
         
-        return self.tai_game_loop(index)  # Appel récursif avec la mise à jour de l'index
+        return self.tai_game_loop(index) 
 
     def draw_button(self, screen, x, y, width, height, button_color, text_color, text, font_size=40):
         
         button_rect = pygame.draw.rect(screen, button_color, (x, y, width, height), border_radius=10)
         # ✅ Créer une police de caractères
-        font = pygame.font.SysFont('Times', font_size)  # Taille 40
-        text = font.render(text, True, text_color)  # Texte en blanc
+        font = pygame.font.SysFont('Times', font_size)
+        text = font.render(text, True, text_color) 
 
         # ✅ Centrer le texte dans le bouton
         text_rect = text.get_rect(center=(x + width // 2, y + height // 2))
-        screen.blit(text, text_rect)  # Affiche le texte
+        screen.blit(text, text_rect)
 
         return button_rect
 
@@ -91,17 +85,17 @@ class tai_enigme_1:
         - font_size : La taille de la police du texte (par défaut 40px).
         """
         # ✅ Calculer la largeur et la hauteur de la bannière
-        banner_width = screen.get_width()  # La largeur de la bannière est égale à la largeur de l'écran
-        banner_rect = pygame.Rect(0, 0, banner_width, banner_height)  # Rectangle de la bannière
+        banner_width = screen.get_width()
+        banner_rect = pygame.Rect(0, 0, banner_width, banner_height)
         
         # ✅ Dessiner la bannière
         pygame.draw.rect(screen, banner_color, banner_rect)
         
         # ✅ Afficher le texte au centre de la bannière
-        font = pygame.font.SysFont(None, font_size)  # Police par défaut de Pygame
-        text_surface = font.render(message, True, text_color)  # Texte rendu
-        text_rect = text_surface.get_rect(center=(banner_width // 2, banner_height // 2))  # Centré dans la bannière
-        screen.blit(text_surface, text_rect)  # Afficher le texte sur l'écran
+        font = pygame.font.SysFont(None, font_size) 
+        text_surface = font.render(message, True, text_color) 
+        text_rect = text_surface.get_rect(center=(banner_width // 2, banner_height // 2))
+        screen.blit(text_surface, text_rect) 
 
 
 
@@ -119,7 +113,7 @@ class tai_enigme_1:
                     
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_x, mouse_y = pygame.mouse.get_pos()
-                    if button.collidepoint(mouse_x, mouse_y):  # ✅ Si le bouton est cliqué
+                    if button.collidepoint(mouse_x, mouse_y): 
                         print(f"Le bouton a été cliqué ! Énigme terminée.")
                         return True
         
@@ -137,14 +131,15 @@ class tai_enigme_1:
                     pygame.quit()
                     sys.exit()
 
-                # if event.type == pygame.MOUSEBUTTONDOWN:
-                #     mouse_x, mouse_y = pygame.mouse.get_pos()
-                #     print(f'posX: {mouse_x}, posY: {mouse_y}')
-
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_x, mouse_y = pygame.mouse.get_pos()
                     if button.collidepoint(mouse_x, mouse_y):  # ✅ Si le bouton est cliqué
                         print(f"Le bouton a été cliqué ! Énigme terminée. {mouse_x}:{mouse_y}")
+                        self.draw_banner(self.game.screen, "Démarrage de l'ordinateur en cours...", banner_color=(255, 0, 0))
+                        pygame.display.update()
+                        
+                        # ⏳ Attendre 5 secondes (5000 ms)
+                        pygame.time.wait(5000)
                         return True
             
 
@@ -190,28 +185,16 @@ class tai_enigme_1:
 
                         if input_texts == correct_answers:
                             return True
-                        # else:
-                        #     self.draw_banner(self.game.screen, "Veuillez entrer le nom des composants", (255,0,0))
-                        #     pygame.display.update()
-
-
-
-
-                
-                # if event.type == pygame.MOUSEBUTTONDOWN:
-                #     mouse_x, mouse_y = pygame.mouse.get_pos()
-                #     print(f'posX: {mouse_x}, posY: {mouse_y}')
-
+                        else:
+                            self.draw_banner(self.game.screen, "Vous avez une ou plusieurs réponses fausses", banner_color=(255, 0, 0))
+                            pygame.display.update()
+                            
+                            pygame.time.wait(5000)
 
                 # ✅ Saisie de texte dans l'input actif
                 if event.type == pygame.KEYDOWN and active_input_index is not None:
                     if event.key == pygame.K_BACKSPACE:  # Efface le dernier caractère
                         input_texts[active_input_index] = input_texts[active_input_index][:-1]
-                    # elif event.key == pygame.K_RETURN:  # Appuyer sur "Entrée" pour valider
-                    #     print("Vérification des réponses...")
-                    #     if input_texts == correct_answers:  # Si toutes les réponses sont correctes
-                    #         print(f"Bonne réponse !")
-                    #         return True  # ✅ On retourne True si les réponses sont correctes
                     else:
                         # Ajouter la lettre à l'input actif
                         input_texts[active_input_index] += event.unicode
@@ -220,8 +203,6 @@ class tai_enigme_1:
             self.game.draw_background(self.backgrounds[index])
 
             button = self.draw_button(self.game.screen, 0, self.game.screen.get_height() - 100, self.game.screen.get_width(), 80, (0, 122, 255), (255, 255, 255), "Valider")
-
-
 
             self.draw_banner(self.game.screen, "Votre ordinateur n'a pas démarré. Veuillez entrer le nom des composants")
 
@@ -235,7 +216,7 @@ class tai_enigme_1:
                 
                 # Ajouter le texte de l'input
                 font = pygame.font.SysFont(None, 30)
-                text_surface = font.render(input_texts[i], True, (0, 0, 0))  # Texte en noir
+                text_surface = font.render(input_texts[i], True, (0, 0, 0))
                 text_rect = text_surface.get_rect(center=input_rect.center)
                 self.game.screen.blit(text_surface, text_rect)
             
