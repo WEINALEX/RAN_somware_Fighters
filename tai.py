@@ -162,7 +162,7 @@ class tai_enigme_1:
                 elif event.key == pygame.K_BACKSPACE:
                     self.game.input_text = self.game.input_text[:-1]
 
-                elif event.key == pygame.K_a:
+                elif event.key == pygame.K_RIGHT and self.index < 3:
                         return True
 
                 else:
