@@ -238,17 +238,17 @@ class Cybersecurite:
     while True:
       # You can draw a prompt for the user on the screen here
       self.start.draw_input_field()
-      # self.draw_text_with_background(
-      #   f"""Créer un nouveau mot de passe sécurisé.""",
-      #   (self.start.SCREEN_WIDTH / 2, self.start.SCREEN_HEIGHT - 200),
-      #   text_color=(0, 0, 0),
-      #   bg_color=(255, 255, 255),
-      #   border_color=(0, 0, 0),
-      #   padding=20,
-      #   border_radius=30,
-      #   border_width=3
-      # )
-      # pygame.display.update()
+      self.draw_text_with_background(
+        f"""Créer un nouveau mot de passe sécurisé.""",
+        (self.start.SCREEN_WIDTH / 2, self.start.SCREEN_HEIGHT - 200),
+        text_color=(0, 0, 0),
+        bg_color=(255, 255, 255),
+        border_color=(0, 0, 0),
+        padding=20,
+        border_radius=30,
+        border_width=3
+      )
+      pygame.display.update()
 
       running = True
 
