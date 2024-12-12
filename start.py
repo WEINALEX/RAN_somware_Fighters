@@ -4,162 +4,119 @@ import sys
 # Initialize Pygame
 pygame.init()
 
-# Set screen dimensions
-SCREEN_WIDTH = 1440
-SCREEN_HEIGHT = 1024
-dark_blue = (13,26,61)
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+class EscapeGame:
 
-# Set window title
-pygame.display.set_caption("Pygame Background Example")
+    def __init__(self):
+        # Set screen dimensions
+        self.SCREEN_WIDTH = 1440
+        self.SCREEN_HEIGHT = 1024
+        self.dark_blue = (13,26,61)
+        self.input_text = ""
+        self.font = pygame.font.Font(None, 36)
+        self.screen = pygame.display.set_mode((self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
 
-# Load background image
-# Replace 'background.jpg' with the path to your image file
-path_file = './assets/'
-background_image = pygame.image.load('./assets/img/background.png')
+        # Set window title
+        pygame.display.set_caption("Pygame Background Example")
 
-# Scale the image to cover the screen while maintaining its aspect ratio
-image_rect = background_image.get_rect()
+        # Load background image
+        # Replace 'background.jpg' with the path to your image file
+        # path_file = './assets/'
+        self.background_image = pygame.image.load('./assets/img/background.png')
 
-def draw_background():
-    # Scale the image to cover the screen
-    scale = max(SCREEN_WIDTH / image_rect.width, SCREEN_HEIGHT / image_rect.height)
-    scaled_width = int(image_rect.width * scale)
-    scaled_height = int(image_rect.height * scale)
-    scaled_image = pygame.transform.scale(background_image, (scaled_width, scaled_height))
+        # Scale the image to cover the screen while maintaining its aspect ratio
+        self.image_rect = self.background_image.get_rect()
 
-    # Center the image on the screen
-    offset_x = (scaled_width - SCREEN_WIDTH) // 2
-    offset_y = (scaled_height - SCREEN_HEIGHT) // 2
-    screen.blit(scaled_image, (-offset_x, -offset_y))
+        self.load_music_assets()
 
-# Load and play background music
-# Replace 'background.mp3' with the path to your audio file
-pygame.mixer.music.load('./assets/sounds/background.mp3')
-pygame.mixer.music.play(-1)  # Play the music in a loop
+    def load_music_assets(self):
+        # Load and play background music
+        # Replace 'background.mp3' with the path to your audio file
+        pygame.mixer.music.load('./assets/sounds/background.mp3')
+        pygame.mixer.music.play(-1)  # Play the music in a loop
 
-# Load quack sound effect
-quack_sound = pygame.mixer.Sound('./assets/sounds/quack.mp3')
+        # Load quack sound effect
+        self.quack_sound = pygame.mixer.Sound('./assets/sounds/quack.mp3')
 
-# Load images for sound on, sound off, and duck icon
-sound_on_image = pygame.image.load('./assets/img/sound_on.png')
-sound_off_image = pygame.image.load('./assets/img/sound_off.png')
-duck_image = pygame.image.load('./assets/img/duck.png')
-# duck_image = pygame.transform.scale(duck_image, (60, 60))  # Resize duck image
+        # Load images for sound on, sound off, and duck icon
+        self.sound_on_image = pygame.image.load('./assets/img/sound_on.png')
+        self.sound_off_image = pygame.image.load('./assets/img/sound_off.png')
+        self.duck_image = pygame.image.load('./assets/img/duck.png')
+        # duck_image = pygame.transform.scale(duck_image, (60, 60))  # Resize duck image
 
-# Resize images if necessary
-sound_on_image = pygame.transform.scale(sound_on_image, (64, 64))
-sound_off_image = pygame.transform.scale(sound_off_image, (64, 64))
+        # Resize images if necessary
+        self.sound_on_image = pygame.transform.scale(self.sound_on_image, (64, 64))
+        self.sound_off_image = pygame.transform.scale(self.sound_off_image, (64, 64))
 
-# Button variables
-sound_button_rect = pygame.Rect(SCREEN_WIDTH - 80, 20, 64, 64)
-music_muted = False
+        # Button variables
+        self.sound_button_rect = pygame.Rect(self.SCREEN_WIDTH - 80, 20, 64, 64)
+        self.music_muted = False
 
-# Input field variables
-input_rect = pygame.Rect((SCREEN_WIDTH // 2) - 300, SCREEN_HEIGHT - 80, 600, 60)
-input_color = (0, 0, 0)  # Black border
-input_text = ""
-font = pygame.font.Font(None, 36)
+        # Input field variables
+        self.input_rect = pygame.Rect((self.SCREEN_WIDTH // 2) - 300, self.SCREEN_HEIGHT - 80, 600, 60)
+        self.input_color = (0, 0, 0)  # Black border
 
-# Validation button variables
-validate_button_rect = pygame.Rect((SCREEN_WIDTH // 2) + 320, SCREEN_HEIGHT - 80, 60, 60)
+        # Validation button variables
+        self.validate_button_rect = pygame.Rect((self.SCREEN_WIDTH // 2) + 320, self.SCREEN_HEIGHT - 80, 60, 60)
 
+    def draw_background(self, image):
+        # Scale the image to cover the screen
+        self.image = pygame.transform.scale(image, (self.screen.get_width() - 200, self.screen.get_height() - 200))
+        # self.scale = max(self.SCREEN_WIDTH / self.image_rect.width, self.SCREEN_HEIGHT / self.image_rect.height)
+        # self.scaled_width = int(self.image_rect.width * self.scale)
+        # self.scaled_height = int(self.image_rect.height * self.scale)
+        # self.scaled_image = pygame.transform.scale(self.background_image, (self.scaled_width, self.scaled_height))
 
-def draw_rounded_rect(surface, rect, color, radius):
-    # Draw a rounded rectangle with transparency
-    pygame.draw.rect(surface, color, rect, border_radius=radius)
+        # Center the image on the screen
+        # self.offset_x = (self.scaled_width - self.SCREEN_WIDTH) // 2
+        # self.offset_y = (self.scaled_height - self.SCREEN_HEIGHT) // 2
+        self.screen.fill(self.dark_blue)
+        self.screen.blit(self.image, (100, 100))
 
+    def draw_rounded_rect(self, surface, rect, color, radius):
+        # Draw a rounded rectangle with transparency
+        pygame.draw.rect(surface, color, rect, border_radius=radius)
 
-def draw_sound_button():
-    if music_muted:
-        screen.blit(sound_off_image, sound_button_rect.topleft)
-    else:
-        screen.blit(sound_on_image, sound_button_rect.topleft)
+    def draw_sound_button(self):
+        if self.music_muted:
+            self.screen.blit(self.sound_off_image, self.sound_button_rect.topleft)
+        else:
+            self.screen.blit(self.sound_on_image, self.sound_button_rect.topleft)
 
+    def draw_input_field(self):
+        # Bottom bar spanning the full width of the screen
+        # bar_rect = pygame.Rect(0, self.SCREEN_HEIGHT - 100, self.SCREEN_WIDTH, 100)
 
-def draw_input_field():
-    # Bottom bar spanning the full width of the screen
-    bar_rect = pygame.Rect(0, SCREEN_HEIGHT - 100, SCREEN_WIDTH, 100)
+        # Top bar spanning the full width of the screen
+        # bar_rect_top = pygame.Rect(0, 0, self.SCREEN_WIDTH, 100)
 
-    # Top bar spanning the full width of the screen
-    bar_rect_top = pygame.Rect(0, 0, SCREEN_WIDTH, 100)
+        # Left bar spanning the full height of the screen
+        # bar_rect_left = pygame.Rect(0, 0, 100, self.SCREEN_HEIGHT)
 
-    # Left bar spanning the full height of the screen
-    bar_rect_left = pygame.Rect(0, 0, 100, SCREEN_HEIGHT)
+        # Right bar spanning the full height of the screen
+        # bar_rect_right = pygame.Rect(self.SCREEN_WIDTH - 100, 0, 100, self.SCREEN_HEIGHT)
 
-    # Right bar spanning the full height of the screen
-    bar_rect_right = pygame.Rect(SCREEN_WIDTH - 100, 0, 100, SCREEN_HEIGHT)
+        # pygame.draw.rect(self.screen, self.dark_blue, bar_rect, border_radius=0)  # Dark blue bar
+        # pygame.draw.rect(self.screen, self.dark_blue, bar_rect_top, border_radius=0)  # Dark blue bar
+        # pygame.draw.rect(self.screen, self.dark_blue, bar_rect_left, border_radius=0)  # Dark blue bar
+        # pygame.draw.rect(self.screen, self.dark_blue, bar_rect_right, border_radius=0)  # Dark blue bar
 
-    pygame.draw.rect(screen, dark_blue, bar_rect, border_radius=0)  # Dark blue bar
-    pygame.draw.rect(screen, dark_blue, bar_rect_top, border_radius=0)  # Dark blue bar
-    pygame.draw.rect(screen, dark_blue, bar_rect_left, border_radius=0)  # Dark blue bar
-    pygame.draw.rect(screen, dark_blue, bar_rect_right, border_radius=0)  # Dark blue bar
+        # Create a surface for the input field with transparency
+        self.input_surface = pygame.Surface((self.input_rect.width, self.input_rect.height), pygame.SRCALPHA)
+        self.input_surface.fill((0, 0, 0, 0))  # Fully transparent background
 
-    # Create a surface for the input field with transparency
-    input_surface = pygame.Surface((input_rect.width, input_rect.height), pygame.SRCALPHA)
-    input_surface.fill((0, 0, 0, 0))  # Fully transparent background
+        # Draw the rounded background on the input surface
+        self.draw_rounded_rect(self.input_surface, self.input_surface.get_rect(), (255, 255, 255), 30)  # ,128) for 50% transparent white
 
-    # Draw the rounded background on the input surface
-    draw_rounded_rect(input_surface, input_surface.get_rect(), (255, 255, 255), 30)  # ,128) for 50% transparent white
+        # Blit the input surface onto the main screen
+        self.screen.blit(self.input_surface, self.input_rect.topleft)
 
-    # Blit the input surface onto the main screen
-    screen.blit(input_surface, input_rect.topleft)
+        # Draw the black border with rounded corners on the main screen
+        pygame.draw.rect(self.screen, self.input_color, self.input_rect, 4, border_radius=30)
 
-    # Draw the black border with rounded corners on the main screen
-    pygame.draw.rect(screen, input_color, input_rect, 4, border_radius=30)
+        # Render text and center it vertically in the input field
+        text_surface = self.font.render(self.input_text, True, self.dark_blue)  # Color text
+        text_rect = text_surface.get_rect(center=self.input_rect.center)
+        self.screen.blit(text_surface, text_rect)
 
-    # Render text and center it vertically in the input field
-    text_surface = font.render(input_text, True, dark_blue)  # Color text
-    text_rect = text_surface.get_rect(center=input_rect.center)
-    screen.blit(text_surface, text_rect)
-
-    # Draw the validation button as a circle with a black border and duck icon
-    screen.blit(duck_image, validate_button_rect.topleft)
-
-
-# Main game loop
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            # Handle click on sound button
-            if sound_button_rect.collidepoint(event.pos):
-                music_muted = not music_muted
-                if music_muted:
-                    pygame.mixer.music.pause()
-                else:
-                    pygame.mixer.music.unpause()
-
-            # Handle click on validation button
-            if validate_button_rect.collidepoint(event.pos):
-                print(f"Input validated: {input_text}")
-                quack_sound.play()  # Play the quack sound
-                input_text = ""  # Clear input text
-
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_RETURN:
-                print(f"Input validated: {input_text}")
-                quack_sound.play()  # Play the quack sound
-                input_text = ""  # Clear input text
-            elif event.key == pygame.K_BACKSPACE:
-                input_text = input_text[:-1]
-            else:
-                input_text += event.unicode
-
-    # Draw the background image
-    draw_background()
-
-    # Draw the input field
-    draw_input_field()
-
-    # Draw the sound button
-    draw_sound_button()
-
-    # Update the display
-    pygame.display.flip()
-
-# Quit Pygame
-pygame.quit()
-sys.exit()
+        # Draw the validation button as a circle with a black border and duck icon
+        self.screen.blit(self.duck_image, self.validate_button_rect.topleft)

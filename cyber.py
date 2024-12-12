@@ -1,167 +1,349 @@
-import pygame
-import sys
-import cyber
-
-# Initialize Pygame
-pygame.init()
-
-# Set screen dimensions
-SCREEN_WIDTH = 1440
-SCREEN_HEIGHT = 1024
-dark_blue = (13,26,61)
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-
-# Set window title
-pygame.display.set_caption("Pygame Background Example")
-
-# Load background image
-# Replace 'background.jpg' with the path to your image file
-path_file = './assets/'
-background_image = pygame.image.load('./assets/img/background.png')
-
-# Scale the image to cover the screen while maintaining its aspect ratio
-image_rect = background_image.get_rect()
-
-def draw_background():
-    # Scale the image to cover the screen
-    scale = max(SCREEN_WIDTH / image_rect.width, SCREEN_HEIGHT / image_rect.height)
-    scaled_width = int(image_rect.width * scale)
-    scaled_height = int(image_rect.height * scale)
-    scaled_image = pygame.transform.scale(background_image, (scaled_width, scaled_height))
-
-    # Center the image on the screen
-    offset_x = (scaled_width - SCREEN_WIDTH) // 2
-    offset_y = (scaled_height - SCREEN_HEIGHT) // 2
-    screen.blit(scaled_image, (-offset_x, -offset_y))
-
-# Load and play background music
-# Replace 'background.mp3' with the path to your audio file
-pygame.mixer.music.load('./assets/sounds/background.mp3')
-pygame.mixer.music.play(-1)  # Play the music in a loop
-
-# Load quack sound effect
-quack_sound = pygame.mixer.Sound('./assets/sounds/quack.mp3')
-
-# Load images for sound on, sound off, and duck icon
-sound_on_image = pygame.image.load('./assets/img/sound_on.png')
-sound_off_image = pygame.image.load('./assets/img/sound_off.png')
-duck_image = pygame.image.load('./assets/img/duck.png')
-# duck_image = pygame.transform.scale(duck_image, (60, 60))  # Resize duck image
-
-# Resize images if necessary
-sound_on_image = pygame.transform.scale(sound_on_image, (64, 64))
-sound_off_image = pygame.transform.scale(sound_off_image, (64, 64))
-
-# Button variables
-sound_button_rect = pygame.Rect(SCREEN_WIDTH - 80, 20, 64, 64)
-music_muted = False
-
-# Input field variables
-input_rect = pygame.Rect((SCREEN_WIDTH // 2) - 300, SCREEN_HEIGHT - 80, 600, 60)
-input_color = (0, 0, 0)  # Black border
-input_text = ""
-font = pygame.font.Font(None, 36)
-
-# Validation button variables
-validate_button_rect = pygame.Rect((SCREEN_WIDTH // 2) + 320, SCREEN_HEIGHT - 80, 60, 60)
+import pygame, sys
+from start import EscapeGame
+import re
 
 
-def draw_rounded_rect(surface, rect, color, radius):
-    # Draw a rounded rectangle with transparency
-    pygame.draw.rect(surface, color, rect, border_radius=radius)
+# pygame.init()
+
+class Cybersecurite:
+  def __init__(self):
+    self.enigme_cyber_1 = False
+    self.enigme_cyber_2 = False
+    self.enigme_cyber_3 = False
+    self.enigme_cyber_4 = False
+    self.password = ""
+    self.font = pygame.font.Font(None, 36)
+    self.background_image = pygame.image.load('./assets/img/salle_cyber.png')
+    self.usb_rect = pygame.Rect(400, 500, 120, 120)  # Example rectangle dimensions
+    self.pc_rect = pygame.Rect(600, 250, 260, 160)  # Example rectangle dimensions
+    self.red_rect_border_thickness = 3  # Thickness of the yellow border
+    self.start = EscapeGame()
+
+  def draw_rectangle_with_border(self, dimentions):
+    # Create a surface for the rectangle with transparency
+    rect_surface = pygame.Surface((dimentions.width, dimentions.height), pygame.SRCALPHA)
+    rect_surface.fill((0, 0, 0, 0))  # transparent (RGBA)
+
+    # Blit the surface onto the main screen
+    self.start.screen.blit(rect_surface, dimentions.topleft)
+
+    # Draw the yellow border around the rectangle
+    pygame.draw.rect(self.start.screen, (255, 193, 7, 128), dimentions, self.red_rect_border_thickness)
+
+  def draw_text_with_background(self, text, position, text_color=(0, 0, 0), bg_color=(255, 255, 255),
+                                border_color=(0, 0, 0), padding=20, border_radius=10, border_width=3):
+    """Draw text with a rounded background and border."""
+    # Render the text surface
+    text_surface = self.font.render(text, True, text_color)
+    text_rect = text_surface.get_rect(center=position)
+
+    # Calculate the background rectangle dimensions with padding
+    bg_rect = pygame.Rect(
+      text_rect.left - padding,
+      text_rect.top - padding,
+      text_rect.width + 2 * padding,
+      text_rect.height + 2 * padding
+    )
+
+    # Draw the border
+    pygame.draw.rect(self.start.screen, border_color, bg_rect, border_width, border_radius)
+
+    # Draw the background rectangle
+    pygame.draw.rect(self.start.screen, bg_color, bg_rect.inflate(-border_width * 2, -border_width * 2), 0,
+                     border_radius)
+
+    # Draw the text on top
+    self.start.screen.blit(text_surface, text_rect)
+
+  def handle_usb_choice(self):
+    response = self.start.input_text.lower()
+
+    if response == "oui":
+
+      # Draw the background image
+      self.start.draw_background(self.background_image)
+
+      # Draw the red rectangle with a yellow border
+      self.draw_rectangle_with_border(dimentions=self.usb_rect)
+      self.draw_rectangle_with_border(dimentions=self.pc_rect)
+
+      self.draw_text_with_background(
+        f"""Les clés USB peuvent contenir des virus et des logiciels malveillants.""",
+        (self.start.SCREEN_WIDTH / 2, self.start.SCREEN_HEIGHT - 200),
+        text_color=(0, 0, 0),
+        bg_color=(255, 255, 255),
+        border_color=(0, 0, 0),
+        padding=20,
+        border_radius=30,
+        border_width=3
+      )
+      self.draw_text_with_background(
+        f"""Erreur : ne branchez jamais une clé USB inconnue sur votre ordinateur.""",
+        (self.start.SCREEN_WIDTH / 2, self.start.SCREEN_HEIGHT - 300),
+        text_color=(0, 0, 0),
+        bg_color=(255, 255, 255),
+        border_color=(0, 0, 0),
+        padding=20,
+        border_radius=30,
+        border_width=3
+      )
+      pygame.display.flip()
+      pygame.time.wait(2000)
+      self.start.draw_background(self.background_image)
+      self.draw_text_with_background(
+        f"Vous avez trouvé une clé USB. Voulez-vous brancher la clé USB ? (oui/non)",
+        (self.start.SCREEN_WIDTH / 2, self.start.SCREEN_HEIGHT - 200),
+        text_color=(0, 0, 0),
+        bg_color=(255, 255, 255),
+        border_color=(0, 0, 0),
+        padding=20,
+        border_radius=30,
+        border_width=3
+      )
 
 
-def draw_sound_button():
-    if music_muted:
-        screen.blit(sound_off_image, sound_button_rect.topleft)
-    else:
-        screen.blit(sound_on_image, sound_button_rect.topleft)
+
+      return False
+
+    elif response == "non":
+      # self.start.draw_background(self.background_image)
+      self.draw_text_with_background(
+        f"Félicitations ! Vous avez fait preuve de prudence. Les clés USB peuvent contenir des virus et des logiciels malveillants.",
+        (self.start.SCREEN_WIDTH / 2, self.start.SCREEN_HEIGHT - 200),
+        text_color=(0, 0, 0),
+        bg_color=(255, 255, 255),
+        border_color=(0, 0, 0),
+        padding=20,
+        border_radius=30,
+        border_width=3
+      )
+      pygame.display.flip()
+      pygame.time.wait(2000)
+      self.start.draw_background(self.background_image)
+      # Draw the red rectangle with a yellow border
+      self.draw_rectangle_with_border(dimentions=self.usb_rect)
+      self.draw_rectangle_with_border(dimentions=self.pc_rect)
+
+      return True
 
 
-def draw_input_field():
-    # Bottom bar spanning the full width of the screen
-    bar_rect = pygame.Rect(0, SCREEN_HEIGHT - 100, SCREEN_WIDTH, 100)
-
-    # Top bar spanning the full width of the screen
-    bar_rect_top = pygame.Rect(0, 0, SCREEN_WIDTH, 100)
-
-    # Left bar spanning the full height of the screen
-    bar_rect_left = pygame.Rect(0, 0, 100, SCREEN_HEIGHT)
-
-    # Right bar spanning the full height of the screen
-    bar_rect_right = pygame.Rect(SCREEN_WIDTH - 100, 0, 100, SCREEN_HEIGHT)
-
-    pygame.draw.rect(screen, dark_blue, bar_rect, border_radius=0)  # Dark blue bar
-    pygame.draw.rect(screen, dark_blue, bar_rect_top, border_radius=0)  # Dark blue bar
-    pygame.draw.rect(screen, dark_blue, bar_rect_left, border_radius=0)  # Dark blue bar
-    pygame.draw.rect(screen, dark_blue, bar_rect_right, border_radius=0)  # Dark blue bar
-
-    # Create a surface for the input field with transparency
-    input_surface = pygame.Surface((input_rect.width, input_rect.height), pygame.SRCALPHA)
-    input_surface.fill((0, 0, 0, 0))  # Fully transparent background
-
-    # Draw the rounded background on the input surface
-    draw_rounded_rect(input_surface, input_surface.get_rect(), (255, 255, 255), 30)  # ,128) for 50% transparent white
-
-    # Blit the input surface onto the main screen
-    screen.blit(input_surface, input_rect.topleft)
-
-    # Draw the black border with rounded corners on the main screen
-    pygame.draw.rect(screen, input_color, input_rect, 4, border_radius=30)
-
-    # Render text and center it vertically in the input field
-    text_surface = font.render(input_text, True, dark_blue)  # Color text
-    text_rect = text_surface.get_rect(center=input_rect.center)
-    screen.blit(text_surface, text_rect)
-
-    # Draw the validation button as a circle with a black border and duck icon
-    screen.blit(duck_image, validate_button_rect.topleft)
-
-
-# Main game loop
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            # Handle click on sound button
-            if sound_button_rect.collidepoint(event.pos):
-                music_muted = not music_muted
-                if music_muted:
-                    pygame.mixer.music.pause()
-                else:
-                    pygame.mixer.music.unpause()
-
-            # Handle click on validation button
-            if validate_button_rect.collidepoint(event.pos):
-                print(f"Input validated: {input_text}")
-                quack_sound.play()  # Play the quack sound
-                input_text = ""  # Clear input text
-
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_RETURN:
-                print(f"Input validated: {input_text}")
-                quack_sound.play()  # Play the quack sound
-                input_text = ""  # Clear input text
-            elif event.key == pygame.K_BACKSPACE:
-                input_text = input_text[:-1]
-            else:
-                input_text += event.unicode
-
-    # Draw the background image
-    draw_background()
-
-    # Draw the input field
-    draw_input_field()
-
-    # Draw the sound button
-    draw_sound_button()
-
-    # Update the display
+  def usb_cyber(self):
+    """Display the USB message with styled background."""
+    self.draw_text_with_background(
+      f"Vous avez trouvé une clé USB. Voulez-vous brancher la clé USB ? (oui/non)",
+      (self.start.SCREEN_WIDTH / 2, self.start.SCREEN_HEIGHT - 200),
+      text_color=(0, 0, 0),
+      bg_color=(255, 255, 255),
+      border_color=(0, 0, 0),
+      padding=20,
+      border_radius=30,
+      border_width=3
+    )
+    # self.start.draw_input_field()
     pygame.display.flip()
 
-# Quit Pygame
-pygame.quit()
-sys.exit()
+    running = True
+
+    while running:
+      for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+          running = False
+        if event.type == pygame.MOUSEBUTTONDOWN:
+          # Handle click on sound button
+          if self.start.sound_button_rect.collidepoint(event.pos):
+            self.start.music_muted = not self.start.music_muted
+            if self.start.music_muted:
+              pygame.mixer.music.pause()
+            else:
+              pygame.mixer.music.unpause()
+
+          # Handle click on validation button
+          if self.start.validate_button_rect.collidepoint(event.pos):
+            print(f"Input validated: {self.start.input_text}")
+            self.start.quack_sound.play()  # Play the quack sound
+            self.handle_usb_choice()
+            self.start.input_text = ""  # Clear input text
+
+
+        if event.type == pygame.KEYDOWN:
+          if event.key == pygame.K_RETURN:
+            print(f"Input validated: {self.start.input_text}")
+            self.start.quack_sound.play()  # Play the quack sound
+            if self.handle_usb_choice():
+              return
+            self.start.input_text = ""  # Clear input text
+
+
+          elif event.key == pygame.K_BACKSPACE:
+            self.start.input_text = self.start.input_text[:-1]
+          else:
+            self.start.input_text += event.unicode
+
+
+      self.start.draw_input_field()
+      pygame.display.flip()
+
+
+  def check_password(self, password):
+    if len(password) < 10 or not re.search("[a-z]", password) or not re.search("[A-Z]", password) or not re.search("[0-9]", password) or not re.search("[!@#$%^&*()_+=\[\]{};':\"\\|,.<>\/?-]", password):
+      # Draw the background image
+      self.start.draw_background(self.background_image)
+
+      # Draw the red rectangle with a yellow border
+      self.draw_rectangle_with_border(dimentions=self.usb_rect)
+      self.draw_rectangle_with_border(dimentions=self.pc_rect)
+
+      self.draw_text_with_background(
+        f"""Votre mot de passe n'est pas sécurisé.""",
+        (self.start.SCREEN_WIDTH / 2, self.start.SCREEN_HEIGHT - 200),
+        text_color=(0, 0, 0),
+        bg_color=(255, 255, 255),
+        border_color=(0, 0, 0),
+        padding=20,
+        border_radius=30,
+        border_width=3
+      )
+
+      pygame.display.flip()
+      pygame.time.wait(2000)
+      self.start.draw_background(self.background_image)
+      self.draw_text_with_background(
+        f"Créer un mot de passe sécurisé",
+        (self.start.SCREEN_WIDTH / 2, self.start.SCREEN_HEIGHT - 200),
+        text_color=(0, 0, 0),
+        bg_color=(255, 255, 255),
+        border_color=(0, 0, 0),
+        padding=20,
+        border_radius=30,
+        border_width=3)
+
+      return False
+    else:
+      self.draw_text_with_background(
+        f"""Votre mot de passe est assez sécurisé.""",
+        (self.start.SCREEN_WIDTH / 2, self.start.SCREEN_HEIGHT - 200),
+        text_color=(0, 0, 0),
+        bg_color=(255, 255, 255),
+        border_color=(0, 0, 0),
+        padding=20,
+        border_radius=30,
+        border_width=3
+      )
+      pygame.display.update()
+      self.enigme_cyber_2 = True
+      return True
+
+  def change_password_cyber(self):
+    self.start.input_text = ""  # Reset input text for password input
+    while True:
+      # You can draw a prompt for the user on the screen here
+      self.start.draw_input_field()
+      # self.draw_text_with_background(
+      #   f"""Créer un nouveau mot de passe sécurisé.""",
+      #   (self.start.SCREEN_WIDTH / 2, self.start.SCREEN_HEIGHT - 200),
+      #   text_color=(0, 0, 0),
+      #   bg_color=(255, 255, 255),
+      #   border_color=(0, 0, 0),
+      #   padding=20,
+      #   border_radius=30,
+      #   border_width=3
+      # )
+      # pygame.display.update()
+
+      running = True
+
+      while running:
+
+        for event in pygame.event.get():
+          if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+            running = False
+          elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RETURN:
+              self.start.quack_sound.play()
+              if self.check_password(self.start.input_text):
+                break
+              else:
+                self.draw_text_with_background(
+                  f"""Votre mot de passe n'est pas sécurisé.""",
+                  (self.start.SCREEN_WIDTH / 2, self.start.SCREEN_HEIGHT - 200),
+                  text_color=(0, 0, 0),
+                  bg_color=(255, 255, 255),
+                  border_color=(0, 0, 0),
+                  padding=20,
+                  border_radius=30,
+                  border_width=3
+                )
+                pygame.display.update()
+                self.start.input_text = ""  # Reset password input
+            elif event.key == pygame.K_BACKSPACE:
+              self.start.input_text = self.start.input_text[:-1]
+            else:
+              self.start.input_text += event.unicode
+
+  def load_cyber(self):
+    cyber_on = True
+
+    # Draw the background image
+    self.start.draw_background(self.background_image)
+
+    # Draw the red rectangle with a yellow border
+    self.draw_rectangle_with_border(dimentions=self.usb_rect)
+    self.draw_rectangle_with_border(dimentions=self.pc_rect)
+
+    while cyber_on:
+      for event in pygame.event.get():
+
+        if event.type == pygame.QUIT:
+          pygame.quit()
+          sys.exit()
+
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+        #
+        #   # Handle click on validation button
+        #   if self.start.validate_button_rect.collidepoint(event.pos):
+        #     print(f"Input validated: {self.start.input_text}")
+        #     self.start.quack_sound.play()  # Play the quack sound
+        #     self.start.input_text = ""  # Clear input text
+
+          # Handle click on sound button
+          # Draw the sound button
+          self.start.draw_sound_button()
+          if self.start.sound_button_rect.collidepoint(event.pos):
+            self.start.music_muted = not self.start.music_muted
+            if self.start.music_muted:
+              pygame.mixer.music.pause()
+              self.start.draw_sound_button()
+            else:
+              pygame.mixer.music.unpause()
+              self.start.draw_sound_button()
+
+          # Handle USB click
+          if self.usb_rect.collidepoint(event.pos):
+            self.start.quack_sound.play()
+            self.usb_cyber()
+
+          # Handle PC click
+          if self.pc_rect.collidepoint(event.pos):
+            self.start.quack_sound.play()
+            self.change_password_cyber()
+
+      # # Draw the background image
+      # self.start.draw_background(self.background_image)
+      #
+      # # Draw the red rectangle with a yellow border
+      # self.draw_rectangle_with_border(dimentions=self.usb_rect)
+      # self.draw_rectangle_with_border(dimentions=self.pc_rect)
+
+
+      # # Draw the input field
+      # EscapeGame().draw_input_field()
+      #
+      # Draw the sound button
+      self.start.draw_sound_button()
+
+      # Update the display
+      pygame.display.flip()
 
