@@ -72,8 +72,8 @@ class EscapeGame:
         # self.offset_y = (self.scaled_height - self.SCREEN_HEIGHT) // 2
         self.screen.fill(self.dark_blue)
         self.screen.blit(self.image, (100, 100))
-        self.draw_input_field()
-        self.draw_sound_button()
+        # self.draw_input_field()
+        # self.draw_sound_button()
 
     def draw_rounded_rect(self, surface, rect, color, radius):
         # Draw a rounded rectangle with transparency

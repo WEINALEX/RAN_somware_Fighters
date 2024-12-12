@@ -21,8 +21,8 @@ class tai_enigme_1:
 
     def import_assets(self):
         background_path = './assets/img/tai_'
-        self.backgrounds = {0: 'web', 1: 'cmd', 
-                            2: 'wifi', 3: 'wifiok', 4: 'webok', 5: 'roomAI', 6: 'computer', 7: 'composantbckgrd'}
+        self.backgrounds = {3: 'web', 4: 'cmd', 
+                            5: 'wifi', 6: 'wifiok', 7: 'webok', 0: 'roomAI', 1: 'computer', 2: 'composantbckgrd'}
         
         for key in self.backgrounds.keys():
             full_path = background_path + self.backgrounds[key] + '.png'
@@ -57,7 +57,7 @@ class tai_enigme_1:
         pygame.display.update()  # On met à jour l'affichage
 
         # On appelle l'étape correspondante
-        step_function = self.steps[index % 4]  # On prend l'étape actuelle
+        step_function = self.steps[index % 8]  # On prend l'étape actuelle
         success = step_function(index)  # Appel de la fonction (ex: step_1, step_2, ...)
 
         if success:
@@ -67,108 +67,113 @@ class tai_enigme_1:
 
     def step_1(self, index):
         """ Énigme 1 """
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-                
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_a:
-                    print(f"Key A pressed, step 1 complete")
-                    return True  # L'énigme est résolue
         
-        return False  # L'énigme n'est pas encore résolue
+
+        
+        
+        
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                    
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_a:
+                        print(f"Key A pressed, step 1 complete")
+                        return True  # L'énigme est résolue
+        
 
     def step_2(self, index):
         """ Énigme 2 """
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-                
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_a:
-                    print(f"Key A pressed, step 2 complete")
-                    return True
-        
-        return False
+        while True:
+            for event in pygame.event.get():
+                # if event.type == pygame.QUIT:
+                #     pygame.quit()
+                #     sys.exit()
+                    
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_a:
+                        print(f"Key A pressed, step 2 complete")
+                        return True
+            
 
     def step_3(self, index):
         """ Énigme 3 """
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-                
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_a:
-                    print(f"Key A pressed, step 3 complete")
-                    return True
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                    
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_a:
+                        print(f"Key A pressed, step 3 complete")
+                        return True
         
-        return False
 
     def step_4(self, index):
         """ Énigme 4 """
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-                
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_a:
-                    print(f"Key A pressed, step 4 complete")
-                    return True
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                    
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_a:
+                        print(f"Key A pressed, step 4 complete")
+                        return True
         
-        return False
     def step_5(self, index):
         """ Énigme 4 """
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-                
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_a:
-                    print(f"Key A pressed, step 4 complete")
-                    return True
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                    
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_a:
+                        print(f"Key A pressed, step 4 complete")
+                        return True
         
-        return False
     def step_6(self, index):
         """ Énigme 4 """
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-                
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_a:
-                    print(f"Key A pressed, step 4 complete")
-                    return True
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                    
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_a:
+                        print(f"Key A pressed, step 4 complete")
+                        return True
         
-        return False
     def step_7(self, index):
         """ Énigme 4 """
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-                
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_a:
-                    print(f"Key A pressed, step 4 complete")
-                    return True
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                    
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_a:
+                        print(f"Key A pressed, step 4 complete")
+                        return True
         
-        return False
     def step_8(self, index):
         """ Énigme 4 """
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-                
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_a:
-                    print(f"Key A pressed, step 4 complete")
-                    return True
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                    
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_a:
+                        print(f"Key A pressed, step 4 complete")
+                        return True
         
-        return False
