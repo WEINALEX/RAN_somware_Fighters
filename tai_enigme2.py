@@ -10,7 +10,8 @@ class TaiEnigme2:
         self.choice_1 = ""
         self.choice_2 = ""
         self.choice_3 = ""
-
+        self.index = 0
+        
     def import_assets(self):
         background_path = './assets/img/tai_'
         self.backgrounds = {0: 'web', 1: 'cmd', 
@@ -22,8 +23,7 @@ class TaiEnigme2:
 
     def load_enigme(self):
         enigme_on = True
-        bg = 0
-        
+
         while enigme_on:
             for event in pygame.event.get():
 
@@ -31,11 +31,108 @@ class TaiEnigme2:
                     pygame.quit()
                     sys.exit()
 
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_LEFT:
-                        self.player_event = "left"
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_x, mouse_y = pygame.mouse.get_pos()
+                    print(f'posX: {mouse_x}, posY: {mouse_y}')
 
-            self.game.screen.fill((0, 0, 0))
-            self.game.draw_background(self.backgrounds[bg])
+            loop_game = self.tai_game_loop(self.index)
+            if loop_game == 8:
+                break
 
-            pygame.display.update()
+    def tai_game_loop(self, index):
+        
+        if index == 8:
+            return index
+      
+        self.step = (self.step_1(), self.step_2(), self.step_3(), self.step_4())
+
+        success = self.step[index]
+
+        self.game.draw_background(self.backgrounds[index])
+        pygame.display.update()
+        
+        if success:
+            index+=1
+        
+        return self.tai_game_loop(index)
+
+    def step_1(self):
+        enigme_on = True
+
+        while enigme_on:
+            for event in pygame.event.get():
+
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_a:
+                        print(f"Key A , step1")
+                        return True
+
+                
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_x, mouse_y = pygame.mouse.get_pos()
+                    print(f'posX: {mouse_x}, posY: {mouse_y}')
+
+    def step_2(self):
+        enigme_on = True
+
+        while enigme_on:
+            for event in pygame.event.get():
+
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_a:
+                        print(f"Key A , step2")
+
+                        return True
+                
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_x, mouse_y = pygame.mouse.get_pos()
+                    print(f'posX: {mouse_x}, posY: {mouse_y}')
+
+    
+    def step_3(self):
+        enigme_on = True
+
+        while enigme_on:
+            for event in pygame.event.get():
+
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_a:
+                        print(f"Key A , step3")
+
+                        return True
+                
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_x, mouse_y = pygame.mouse.get_pos()
+                    print(f'posX: {mouse_x}, posY: {mouse_y}')
+    
+    def step_4(self):
+        enigme_on = True
+
+        while enigme_on:
+            for event in pygame.event.get():
+
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_a:
+                        print(f"Key A , step4")
+
+                        return True
+                
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_x, mouse_y = pygame.mouse.get_pos()
+                    print(f'posX: {mouse_x}, posY: {mouse_y}')

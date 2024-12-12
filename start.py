@@ -7,8 +7,8 @@ class EscapeGame:
 
     def __init__(self):
         # Set screen dimensions
-        self.SCREEN_WIDTH = 1440
-        self.SCREEN_HEIGHT = 1024
+        self.SCREEN_WIDTH = 1080
+        self.SCREEN_HEIGHT = 768
         self.dark_blue = (13,26,61)
         self.input_text = ""
         self.font = pygame.font.Font(None, 36)
