@@ -12,7 +12,7 @@ class tai_enigme_1:
     def __init__(self):
         self.game = EscapeGame()
         self.index = 0
-        self.steps = (self.step_1, self.step_2, self.step_3, self.step_4, self.step_5, self.step_6, self_step_7, self.step_8)
+        self.steps = (self.step_1, self.step_2, self.step_3, self.step_4, self.step_5, self.step_6, self.step_7, self.step_8)
         self.input_text = ""
         self.import_assets()
         self.choice_1 = ""
